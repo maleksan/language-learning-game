@@ -1,5 +1,5 @@
 # Language Learning Question Game
-Test
+
 An interactive web application designed to help users learn a new language through a question game. The application generates vocabulary and grammar questions in a game format, based on the selected language and level of proficiency. Progress is tracked and the questions adapt based on user performance, providing a dynamic and personalized learning experience.
 
 ## Table of Contents
