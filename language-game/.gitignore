@@ -1,0 +1,8 @@
+bundle.js*
+/node_modules
+/coverage
+npm-debug.log
+.DS_Store
+/*.env
+/src/client/public/dist
+/__snapshots__

@@ -1,0 +1,45 @@
+exports[`App (Snapshot) App renders 1`] = `
+<div>
+  <div
+    className="ui pushable segment">
+    <div
+      className="ui inverted ui sidebar top push visible menu">
+      <div
+        className="item"
+        onClick={[Function]}>
+        <h1
+          className="ui inverted header">
+          Mandarin Numbers
+        </h1>
+      </div>
+    </div>
+    <div
+      className="pusher">
+      <div
+        className="ui basic segment">
+        <div
+          className="ui centered padded one column grid">
+          <div
+            className="column">
+            <div
+              className="ui text container">
+              <div
+                className="ui segment">
+                <p>
+                  I\'ll read off a series of random numbers. Type for me the numbers that you hear.
+                </p>
+                <button
+                  className="ui massive button"
+                  onClick={[Function]}
+                  tabIndex={undefined}>
+                  Begin
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
