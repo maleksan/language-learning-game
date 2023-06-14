@@ -2,7 +2,7 @@
 
 A simple language learning game as a demonstration of a basic React/Redux app.
 
-[Demo](https://numbersgame.herokuapp.com)
+[Demo](http://ec2-35-160-149-202.us-west-2.compute.amazonaws.com)
 
 ## Getting Started
 
