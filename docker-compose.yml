@@ -1,0 +1,24 @@
+version: "3.7"
+
+services:
+  ################################################################################
+  # language-learning-game-app
+  ################################################################################
+  ####
+  language-learning-game-app:
+    image: fitamaksims/language-learning-game-server:0.0.1
+    ports:
+      - "80:8080"
+    networks:
+      - language-learning-game-net
+    container_name: language-learning-game-app
+    restart: "always"
+
+networks:
+  language-learning-game-net:
+    driver: bridge
+
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.1.0/24
