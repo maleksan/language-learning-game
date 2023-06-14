@@ -22,7 +22,7 @@ docker build -t fitamaksims/language-learning-game-server:0.0.1 .
 #
 docker container run --rm -p 8080:8080 fitamaksims/language-learning-game-server:0.0.1
 #
-docker push fitamaksims/language-learning-game-server:0.0.1 .
+docker push fitamaksims/language-learning-game-server:0.0.1
 ```
 
 ## Attribution
