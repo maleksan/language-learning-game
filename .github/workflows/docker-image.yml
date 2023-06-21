@@ -3,12 +3,12 @@ name: Docker Image CI
 on:
   push:
     branches: ["maleksan"]
-    # paths:
-    #   - "language-game/**"
+    paths:
+      - "language-game/**"
   pull_request:
     branches: ["maleksan"]
-    # paths:
-    #   - "language-game/**"
+    paths:
+      - "language-game/**"
 
 jobs:
   push_to_registry:
@@ -35,6 +35,6 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          push: false
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
