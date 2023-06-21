@@ -6,11 +6,11 @@ on:
       - "main"
     paths:
       - "language-game/**"
-  pull_request:
-    branches: 
-      - "main"
-    paths:
-      - "language-game/**"
+  # pull_request:
+  #   branches: 
+  #     - "main"
+  #   paths:
+  #     - "language-game/**"
 
 jobs:
   push_to_registry:
