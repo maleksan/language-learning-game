@@ -48,16 +48,14 @@ jobs:
           echo "${GITHUB_SHA_SHORT}"
           echo "${AWS_EC2_HOSTNAME}"
           echo "$AWS_EC2_PRIVATE_KEY" > private_key && chmod 600 private_key
+          rsync --stats -avh --progress \
+          -e "ssh -o StrictHostKeyChecking=no -i private_key" \
+          ./docker-compose.yml ${AWS_EC2_USER_NAME}@${AWS_EC2_HOSTNAME}:/home/${AWS_EC2_USER_NAME}
           ssh -o StrictHostKeyChecking=no -i private_key ${AWS_EC2_USER_NAME}@${AWS_EC2_HOSTNAME} '
           
             #Now we have got the access of EC2 and we will start the deploy .
             pwd &&
             docker --version &&
-            docker-compose --version
-          '
-          rsync --stats -avh --progress ./docker-compose.yml ${AWS_EC2_USER_NAME}@${AWS_EC2_HOSTNAME}:/home/${AWS_EC2_USER_NAME}
-          ssh -o StrictHostKeyChecking=no -i private_key ${AWS_EC2_USER_NAME}@${AWS_EC2_HOSTNAME} '
-          
-            #Now we have got the access of EC2 and we will start the deploy .
+            docker-compose --version &&
             cat /home/ubuntu/docker-compose.yml
           '
