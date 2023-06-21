@@ -5,12 +5,12 @@ on:
     branches: 
       - "maleksan"
     paths:
-      - "language-game"
+      - "language-game/**"
   pull_request:
     branches: 
       - "maleksan"
     paths:
-      - "language-game"
+      - "language-game/**"
 
 jobs:
   push_to_registry:
