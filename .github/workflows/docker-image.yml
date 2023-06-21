@@ -2,12 +2,12 @@ name: Docker Image CI
 
 on:
   push:
-    branches: 
+    branches:
       - "main"
     paths:
       - "language-game/**"
   # pull_request:
-  #   branches: 
+  #   branches:
   #     - "main"
   #   paths:
   #     - "language-game/**"
@@ -38,5 +38,6 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          # tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }}-${{ github.sha }}
           labels: ${{ steps.meta.outputs.labels }}
