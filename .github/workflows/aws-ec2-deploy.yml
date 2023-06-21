@@ -1,9 +1,13 @@
 name: Deploy to Amazon EC2
 
 on:
-  push:
+  workflow_run:
+    workflows:
+      - "Docker Image CI"
+    types:
+      - "completed"
     branches:
-      - "maleksan"
+      - "main"
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION }}
@@ -47,6 +51,7 @@ jobs:
         run: |
           echo "Github commit is: ${GITHUB_SHA_SHORT}"
           echo "$AWS_EC2_PRIVATE_KEY" > private_key && chmod 600 private_key
+          sed -i "s|<change_image_tag>|${GITHUB_SHA_SHORT}|g" ./docker-compose.yml
           rsync --stats -avh --progress \
           -e "ssh -o StrictHostKeyChecking=no -i private_key" \
           ./docker-compose.yml ${AWS_EC2_USER_NAME}@${AWS_EC2_HOSTNAME}:/home/${AWS_EC2_USER_NAME}
