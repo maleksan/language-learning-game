@@ -1,0 +1,32 @@
+name: Deploy to Amazon EC2
+
+on:
+  push:
+    branches:
+      - "maleksan"
+
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Get EC2 PublicDnsName    
+        run: |
+          aws ec2 describe-instances \
+          --filters \
+          "Name=instance-state-name,Values=running" \
+          "Name=tag:Name,Values=group-c-language-learning-game-server-2" \
+          --query 'Reservations[*].Instances[*].[PublicDnsName]' \
+          --output text     
