@@ -3,12 +3,12 @@ name: Docker Image CI
 on:
   push:
     branches: 
-      - "maleksan"
+      - "main"
     paths:
       - "language-game/**"
   pull_request:
     branches: 
-      - "maleksan"
+      - "main"
     paths:
       - "language-game/**"
 
