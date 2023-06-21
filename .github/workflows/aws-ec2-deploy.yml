@@ -6,7 +6,7 @@ on:
       - "maleksan"
 
 env:
-  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_REGION: ${{ vars.AWS_REGION }}
 
 permissions:
   contents: read
@@ -21,7 +21,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ vars.AWS_REGION }}
 
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -45,8 +45,7 @@ jobs:
             AWS_EC2_USER_NAME: ${{ secrets.AWS_EC2_USER_NAME  }}
             GITHUB_SHA_SHORT: ${{ steps.vars.outputs.sha_short }}
         run: |
-          echo "${GITHUB_SHA_SHORT}"
-          echo "${AWS_EC2_HOSTNAME}"
+          echo "Github commit is: ${GITHUB_SHA_SHORT}"
           echo "$AWS_EC2_PRIVATE_KEY" > private_key && chmod 600 private_key
           rsync --stats -avh --progress \
           -e "ssh -o StrictHostKeyChecking=no -i private_key" \
@@ -54,8 +53,9 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key ${AWS_EC2_USER_NAME}@${AWS_EC2_HOSTNAME} '
           
             #Now we have got the access of EC2 and we will start the deploy .
-            pwd &&
             docker --version &&
             docker-compose --version &&
-            cat /home/ubuntu/docker-compose.yml
+            docker-compose up -d
           '
+          echo "Deploy completed!"
+          echo "Visit website: http://${AWS_EC2_HOSTNAME}"
