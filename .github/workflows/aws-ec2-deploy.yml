@@ -22,11 +22,36 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-      - name: Get EC2 PublicDnsName    
+
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
+      - name: Set outputs
+        id: vars
         run: |
-          aws ec2 describe-instances \
-          --filters \
-          "Name=instance-state-name,Values=running" \
-          "Name=tag:Name,Values=group-c-language-learning-game-server-2" \
-          --query 'Reservations[*].Instances[*].[PublicDnsName]' \
-          --output text     
+          echo "sha_short=$(git rev-parse --short HEAD)" >>$GITHUB_OUTPUT &&
+          echo "public_dns_name=$(aws ec2 describe-instances \
+              --filters \
+              'Name=instance-state-name,Values=running' \
+              'Name=tag:Name,Values=group-c-language-learning-game-server-2' \
+              --query \
+              'Reservations[*].Instances[*].[PublicDnsName]' \
+              --output text)" >>$GITHUB_OUTPUT
+
+      - name: Deploy to Amazon EC2
+        env:
+            AWS_EC2_PRIVATE_KEY: ${{ secrets.AWS_EC2_PRIVATE_KEY  }}
+            AWS_EC2_HOSTNAME: ${{ steps.vars.outputs.public_dns_name }}
+            AWS_EC2_USER_NAME: ${{ secrets.AWS_EC2_USER_NAME  }}
+            GITHUB_SHA_SHORT: ${{ steps.vars.outputs.sha_short }}
+        run: |
+          echo "${GITHUB_SHA_SHORT}"
+          echo "${AWS_EC2_HOSTNAME}"
+          echo "$AWS_EC2_PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${AWS_EC2_USER_NAME}@${AWS_EC2_HOSTNAME} '
+          
+            #Now we have got the access of EC2 and we will start the deploy .
+            pwd &&
+            docker --version &&
+            docker-compose --version
+          '
