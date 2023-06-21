@@ -1,4 +1,4 @@
-# Numbers Repetition Game TEST
+# Numbers Repetition Game
 
 A simple language learning game as a demonstration of a basic React/Redux app.
 
