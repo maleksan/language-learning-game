@@ -16,9 +16,10 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
-    name: Deploy
+  on-success:
+    name: Deploy-success
     runs-on: ubuntu-22.04
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -44,10 +45,10 @@ jobs:
 
       - name: Deploy to Amazon EC2
         env:
-            AWS_EC2_PRIVATE_KEY: ${{ secrets.AWS_EC2_PRIVATE_KEY  }}
-            AWS_EC2_HOSTNAME: ${{ steps.vars.outputs.public_dns_name }}
-            AWS_EC2_USER_NAME: ${{ secrets.AWS_EC2_USER_NAME  }}
-            GITHUB_SHA_SHORT: ${{ steps.vars.outputs.sha_short }}
+          AWS_EC2_PRIVATE_KEY: ${{ secrets.AWS_EC2_PRIVATE_KEY  }}
+          AWS_EC2_HOSTNAME: ${{ steps.vars.outputs.public_dns_name }}
+          AWS_EC2_USER_NAME: ${{ secrets.AWS_EC2_USER_NAME  }}
+          GITHUB_SHA_SHORT: ${{ steps.vars.outputs.sha_short }}
         run: |
           echo "Github commit is: ${GITHUB_SHA_SHORT}"
           echo "$AWS_EC2_PRIVATE_KEY" > private_key && chmod 600 private_key
@@ -56,7 +57,7 @@ jobs:
           -e "ssh -o StrictHostKeyChecking=no -i private_key" \
           ./docker-compose.yml ${AWS_EC2_USER_NAME}@${AWS_EC2_HOSTNAME}:/home/${AWS_EC2_USER_NAME}
           ssh -o StrictHostKeyChecking=no -i private_key ${AWS_EC2_USER_NAME}@${AWS_EC2_HOSTNAME} '
-          
+
             #Now we have got the access of EC2 and we will start the deploy .
             docker --version &&
             docker-compose --version &&
@@ -64,3 +65,10 @@ jobs:
           '
           echo "Deploy completed!"
           echo "Visit website: http://${AWS_EC2_HOSTNAME}"
+
+  on-failure:
+    name: Deploy-fail
+    runs-on: ubuntu-22.04
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: echo "Docker Image CI workflow was a failure, skip action..."
