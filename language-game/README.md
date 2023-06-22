@@ -1,5 +1,5 @@
 Numbers Repetition Game
-TEST5
+TEST6
 =====
 
 A simple language learning game as a demonstration of a basic React/Redux app.
