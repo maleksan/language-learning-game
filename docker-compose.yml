@@ -6,7 +6,7 @@ services:
   ################################################################################
   ####
   language-learning-game-app:
-    image: fitamaksims/language-learning-game-server:<change_image_tag>
+    image: fitamaksims/language-learning-game-server:main-<change_image_tag>
     ports:
       - "80:8080"
     networks:
