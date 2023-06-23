@@ -1,4 +1,4 @@
-import * as sinon from 'Sinon';
+import * as sinon from 'sinon';
 
 import * as actions from './GameActions';
 import * as GameUtils from './GameUtils';
