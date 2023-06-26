@@ -36,3 +36,6 @@ under an [Attribution 3.0](https://creativecommons.org/licenses/by/3.0/us/legalc
 [![Docker Image CI](https://github.com/maleksan/language-learning-game/actions/workflows/docker-image.yml/badge.svg)](https://github.com/maleksan/language-learning-game/actions/workflows/docker-image.yml)
 
 [![Deploy to Amazon EC2](https://github.com/maleksan/language-learning-game/actions/workflows/aws-ec2-deploy.yml/badge.svg)](https://github.com/maleksan/language-learning-game/actions/workflows/aws-ec2-deploy.yml)
+
+## Tests
+npm test
