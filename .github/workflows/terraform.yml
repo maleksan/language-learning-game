@@ -3,7 +3,7 @@ name: "Terraform"
 on:
   push:
     branches:
-      - "main"
+      - "maleksan"
     paths:
       - "terraform/main.tf"
 
@@ -26,6 +26,26 @@ jobs:
         shell: bash
 
     steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Find AWS EC2 instance
+        run: |
+          if aws ec2 describe-instances \
+              --filters \
+              'Name=instance-state-name,Values=running' \
+              'Name=tag:Name,Values=group-c-language-learning-game-server' \
+              --query \
+              'Reservations[*].Instances[*].[PublicDnsName]' \
+              --output text | grep "amazon"; then
+              echo "AWS EC2 instance with name \"group-c-language-learning-game-server\" already exists, abort operation..."
+              exit 1  
+          fi
+
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
         uses: actions/checkout@v3
@@ -53,7 +73,6 @@ jobs:
           terraform plan -input=false
 
         # On push to "main", build or change infrastructure according to Terraform configuration files
-        # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
       - name: Terraform Apply
         run: |
           cd ./terraform &&

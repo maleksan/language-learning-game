@@ -38,7 +38,7 @@ jobs:
           echo "public_dns_name=$(aws ec2 describe-instances \
               --filters \
               'Name=instance-state-name,Values=running' \
-              'Name=tag:Name,Values=group-c-language-learning-game-server-2' \
+              'Name=tag:Name,Values=group-c-language-learning-game-server' \
               --query \
               'Reservations[*].Instances[*].[PublicDnsName]' \
               --output text)" >>$GITHUB_OUTPUT
