@@ -3,7 +3,7 @@ name: "Terraform"
 on:
   push:
     branches:
-      - "maleksan"
+      - "main"
     paths:
       - "terraform/main.tf"
 
